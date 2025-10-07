@@ -27,7 +27,7 @@ export class PatientsController {
   list(@Query() query: ListPatientsDto) {
     return this.service.list(query);
   }
-  @Roles('admin', 'doctor')
+  @Roles('admin', 'doctor', 'reception')
   @Post()
   create(@Body() dto: CreatePatientDto) {
     return this.service.create(dto);
@@ -39,7 +39,7 @@ export class PatientsController {
   }
   @Roles('admin', 'reception')
   @Patch(':id')
-  update(@Param() id: string, @Body() dto: UpdatePatientDTO) {
+  update(@Param('id') id: string, @Body() dto: UpdatePatientDTO) {
     return this.service.update(id, dto);
   }
   @Roles('admin')

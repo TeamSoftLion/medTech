@@ -19,6 +19,11 @@ enum AppointmentStatus {
   completed
   canceled
 }
+enum RecordType {
+  diagnosis
+  treatment
+  note
+}
 
 model User{
   id String @id @default(cuid())
@@ -67,13 +72,16 @@ model Appointment {
 }
 
 model MedicalRecord {
-  id           String   @id @default(cuid())
-  patient      Patient  @relation(fields: [patientId], references: [id])
+  id           String     @id @default(cuid())
+  patient      Patient    @relation(fields: [patientId], references: [id])
   patientId    String
-  author       User     @relation("AuthorRecords", fields: [authorId], references: [id])
+  author       User       @relation("AuthorRecords", fields: [authorId], references: [id])
   authorId     String
-  type         String   // masalan: "diagnosis" | "treatment" | "note"
+  type         RecordType
   description  String?
-  prescription String?  // yozilgan dori/ko'rsatma
-  createdAt    DateTime @default(now())
+  prescription String?
+  createdAt    DateTime   @default(now())
+
+  @@index([patientId, createdAt])
+  @@index([authorId, createdAt])
 }
